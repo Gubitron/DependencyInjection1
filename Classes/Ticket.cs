@@ -6,8 +6,8 @@ public class Ticket
 
     public Ticket()
     {
-        _id = new Guid();
+        _id = Guid.NewGuid();
     }
 
-    public Guid Id { get; }
+    public Guid Id => _id;
 }

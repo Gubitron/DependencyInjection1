@@ -1,6 +1,4 @@
-﻿using System;
-
-public interface IDateTime
+﻿public interface IDateTime
 {
     DateTime Now { get; }
 }
