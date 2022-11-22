@@ -1,0 +1,11 @@
+global using Xunit;
+global using Moq;
+global using FluentAssertions;
+global using AutoFixture;
+global using AutoFixture.Xunit2;
+global using AutoFixture.AutoMoq;
+global using DependencyInjection1.Classes;
+global using DependencyInjection1.Repositories;
+global using DependencyInjection1.Services;
+global using DependencyInjection1.Interfaces;
+global using Microsoft.Extensions.DependencyInjection;

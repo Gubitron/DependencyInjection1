@@ -35,6 +35,18 @@ public class CinemaApplicationService
 
     public void EnterAuditorium(int auditoriumNumber, Ticket ticket)
     {
-        _auditoriumRepository.Auditoriums[auditoriumNumber].TryEnter(ticket);
+        foreach (Auditorium auditorium in _auditoriumRepository.Auditoriums)
+        {
+            if (auditorium.Number == auditoriumNumber)
+            {
+                if (!auditorium.TryEnter(ticket))
+                {
+                    throw new Exception("Entry denied!");
+                }
+
+                return;
+            }
+        }
+        throw new Exception("No such auditorium exists!");
     }
 }

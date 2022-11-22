@@ -19,13 +19,13 @@ public class MovieSession
         _startsAt = startsAt;
 
         _tickets = new List<Ticket>();
-        for(int i = 0; i < ticketCount; i++)
+        for (int i = 0; i < ticketCount; i++)
         {
             _tickets.Add(new Ticket());
         }
 
         _bookings = new Dictionary<Guid, bool>();
-        foreach(Ticket ticket in _tickets)
+        foreach (Ticket ticket in _tickets)
         {
             _bookings.Add(ticket.Id, false);
         }
@@ -45,7 +45,7 @@ public class MovieSession
 
     public List<Ticket> Tickets { get => _tickets; }
 
-    public DateTime StartsAt { get => _startsAt; }
+    public DateTime StartsAt { get => _startsAt; set => _startsAt = value; }
 
     public void SetTicketAsBooked(Guid ticketId)
     {
@@ -54,7 +54,7 @@ public class MovieSession
 
     public bool SessionFullyBooked()
     {
-        return !_bookings.Values.Distinct().Any();
+        return _bookings.Values.All(x => x == true);
     }
 
     public int CheckRemainingTicketCount()
@@ -64,11 +64,16 @@ public class MovieSession
 
     public Ticket? BookTicket()
     {
-        foreach(Ticket ticket in _tickets)
+        foreach (Ticket ticket in _tickets)
         {
-            if (ticket.Id == _bookings.First(x => x.Value == false).Key)
+            bool value;
+            if (_bookings.TryGetValue(ticket.Id, out value))
             {
-                return ticket;
+                if (value == false)
+                {
+                    SetTicketAsBooked(ticket.Id);
+                    return ticket;
+                }
             }
         }
 
