@@ -2,27 +2,36 @@
 
 public class MovieSessionRepository
 {
-    private List<MovieSession> _movieSessions;
+    public List<MovieSession> MovieSessions { get; }
 
     public MovieSessionRepository()
     {
-        _movieSessions = new List<MovieSession>();
+        MovieSessions = new List<MovieSession>();
     }
-
-    public List<MovieSession> MovieSessions { get => _movieSessions; }
 
     public void Add(MovieSession session)
     {
-        _movieSessions.Add(session);
+        MovieSessions.Add(session);
     }
 
     public bool Delete(MovieSession session)
     {
-        return _movieSessions.Remove(session);
+        return MovieSessions.Remove(session);
     }
 
-    public MovieSession Get(int index)
+    public IEnumerable<MovieSession> GetByName(string movieName)
     {
-        return _movieSessions[index];
+
+        return MovieSessions.Where(x => x.MovieName == movieName);
+    }
+
+    public IEnumerable<MovieSession> GetById(Guid id)
+    {
+        return MovieSessions.Where(x => x.SessionId == id);
+    }
+
+    public IEnumerable<MovieSession> GetByAuditoriumNumber(int auditoriumNumber)
+    {
+        return MovieSessions.Where(x => x.AuditoriumNumber == auditoriumNumber);
     }
 }

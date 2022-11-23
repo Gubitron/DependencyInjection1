@@ -2,27 +2,29 @@
 
 public class MovieSession_Tests
 {
-    [Theory]
-    [AutoData]
-    public void SessionFullyBooked_WhenNoMoreTickets_ReturnsNull(MovieSession session)
+    [Theory, AutoData]
+    public void SessionFullyBooked_WhenNoMoreTickets_ReturnsNull(string movieName, 
+                                                                 int auditoriumNumber, 
+                                                                 DateTime startsAt, 
+                                                                 Ticket ticket)
     {
-        var sut = session;
+        // Arrange
+        List<Ticket> tickets = new List<Ticket> { ticket };
+        MovieSession sut = new MovieSession(tickets,
+                                            movieName,
+                                            auditoriumNumber,
+                                            startsAt);
 
-        var ticketCount = sut.Tickets.Count;
-        foreach (Ticket ticket in sut.Tickets)
-        {
-            var bookedTicket = sut.BookTicket();
-            bookedTicket.Should().BeOfType<Ticket>();
-
-            ticketCount--;
-            var remainingTickets = sut.CheckRemainingTicketCount();
-            remainingTickets.Should().Be(ticketCount);
-        }
-
-        var actual = sut.BookTicket();
-        actual.Should().BeNull();
-
+        // Act
+        var bookedTicket = sut.BookTicket().First();
+        var remainingTickets = sut.CheckRemainingTicketCount();
+        var overbooking = () => sut.BookTicket();
         var fullyBooked = sut.SessionFullyBooked();
+
+        // Assert
+        bookedTicket.Should().BeOfType<Ticket>();
+        remainingTickets.Should().Be(0);
+        overbooking.Should().Throw<Exception>();
         fullyBooked.Should().BeTrue();
-    } 
+    }
 }

@@ -1,5 +1,6 @@
 ﻿namespace DependencyInjection1.Services;
 
+// TODO: Use clean architecture
 public class CinemaApplicationService
 {
     private readonly MovieSessionRepository _movieRepository;
@@ -22,31 +23,14 @@ public class CinemaApplicationService
 
     public IEnumerable<Ticket> BuyTickets(Guid movieSessionGuid, int count)
     {
-        foreach (MovieSession movieSession in _movieRepository.MovieSessions)
-        {
-            if (movieSession.SessionId == movieSessionGuid)
-            {
-                return _ticketOffice.BuyTickets(movieSession, count);
-            }
-        }
-
-        throw new Exception("Movie doesn't exist!");
+        return TicketOffice.BuyTickets(_movieRepository.GetById(movieSessionGuid).First(), count);
     }
 
     public void EnterAuditorium(int auditoriumNumber, Ticket ticket)
     {
-        foreach (Auditorium auditorium in _auditoriumRepository.Auditoriums)
+        if (!_auditoriumRepository.GetByNumber(auditoriumNumber).First().TryEnter(ticket))
         {
-            if (auditorium.Number == auditoriumNumber)
-            {
-                if (!auditorium.TryEnter(ticket))
-                {
-                    throw new Exception("Entry denied!");
-                }
-
-                return;
-            }
+            throw new Exception("No such auditorium exists!");
         }
-        throw new Exception("No such auditorium exists!");
     }
 }

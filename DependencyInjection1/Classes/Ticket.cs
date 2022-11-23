@@ -2,12 +2,10 @@
 
 public class Ticket
 {
-    private readonly Guid _id;
+    public Guid Id { get; }
 
     public Ticket()
     {
-        _id = Guid.NewGuid();
+        Id = Guid.NewGuid();
     }
-
-    public Guid Id => _id;
 }

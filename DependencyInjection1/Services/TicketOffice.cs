@@ -11,26 +11,24 @@ public class TicketOffice
         _movieSessionRepository = movieSessionRepository;
     }
 
-    public IEnumerable<Ticket> BuyTickets(MovieSession movieSession, int count)
+    public static IEnumerable<Ticket> BuyTickets(MovieSession movieSession, int count)
     {
         if (movieSession.SessionFullyBooked())
         {
             throw new Exception("The movie is fully booked!");
         }
 
-        if (movieSession.CheckRemainingTicketCount() >= count)
-        {
-            List<Ticket> tickets = new List<Ticket>();
-            for (int i = 0; i < count; i++)
-            {
-                tickets.Add(movieSession.BookTicket());
-                movieSession.SetTicketAsBooked(tickets[i].Id);
-            }
-            return tickets;
-        }
-        else
+        if (movieSession.CheckRemainingTicketCount() < count)
         {
             throw new Exception("Not enough tickets remain!");
         }
+
+        List<Ticket> tickets = new List<Ticket>();
+        for (int i = 0; i < count; i++)
+        {
+            tickets.Add(movieSession.BookTicket().First());
+        }
+
+        return tickets;
     }
 }

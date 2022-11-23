@@ -2,27 +2,30 @@
 
 public class AuditoriumRepository
 {
-    private List<Auditorium> _auditoriums;
+    public List<Auditorium> Auditoriums { get; }
 
     public AuditoriumRepository()
     {
-        _auditoriums = new List<Auditorium>();
+        Auditoriums = new List<Auditorium>();
     }
-
-    public List<Auditorium> Auditoriums { get => _auditoriums; set => _auditoriums = value; }
 
     public void Add(Auditorium auditorium)
     {
-        _auditoriums.Add(auditorium);
+        Auditoriums.Add(auditorium);
     }
 
     public bool Delete(Auditorium auditorium)
     {
-        return _auditoriums.Remove(auditorium);
+        return Auditoriums.Remove(auditorium);
     }
 
-    public Auditorium Get(int index)
+    public IEnumerable<Auditorium> GetByMovieId(Guid movieId)
     {
-        return _auditoriums[index];
+        return Auditoriums.Where(x => x.CurrentMovieSessionId == movieId);
+    }
+
+    public IEnumerable<Auditorium> GetByNumber(int auditoriumNumber)
+    {
+        return Auditoriums.Where(x => x.Number == auditoriumNumber);
     }
 }

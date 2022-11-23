@@ -11,18 +11,13 @@ public class MovieSession
     private Dictionary<Guid, bool> _scannedTickets;
 
 
-    public MovieSession(string movieName, int auditoriumNumber, int ticketCount, DateTime startsAt)
+    public MovieSession(List<Ticket> tickets, string movieName, int auditoriumNumber, DateTime startsAt)
     {
         _sessionId = Guid.NewGuid();
         _movieName = movieName;
         _auditoriumNumber = auditoriumNumber;
         _startsAt = startsAt;
-
-        _tickets = new List<Ticket>();
-        for (int i = 0; i < ticketCount; i++)
-        {
-            _tickets.Add(new Ticket());
-        }
+        _tickets = tickets;
 
         _bookings = new Dictionary<Guid, bool>();
         foreach (Ticket ticket in _tickets)
@@ -62,22 +57,11 @@ public class MovieSession
         return _bookings.Where(x => x.Value == false).Count();
     }
 
-    public Ticket? BookTicket()
+    public IEnumerable<Ticket> BookTicket()
     {
-        foreach (Ticket ticket in _tickets)
-        {
-            bool value;
-            if (_bookings.TryGetValue(ticket.Id, out value))
-            {
-                if (value == false)
-                {
-                    SetTicketAsBooked(ticket.Id);
-                    return ticket;
-                }
-            }
-        }
-
-        return null;
+        Guid ticketId = _bookings.First(x => x.Value == false).Key;
+        SetTicketAsBooked(ticketId);
+        return _tickets.Where(x => x.Id == ticketId);
     }
 
     public bool TicketValid(Ticket ticket)
@@ -87,14 +71,13 @@ public class MovieSession
 
     public bool ScanTicket(Ticket ticket)
     {
-        if (!_scannedTickets[ticket.Id])
-        {
-            _scannedTickets[ticket.Id] = true;
-            return true;
-        }
-        else
+
+        if (_scannedTickets[ticket.Id])
         {
             return false;
         }
+
+        _scannedTickets[ticket.Id] = true;
+        return true;
     }
 }

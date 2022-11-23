@@ -3,48 +3,42 @@
 public class TicketOffice_Tests
 {
     [Theory, AutoData]
-    public void BuyTickets_SunshineCase_ReturnsTicket(MovieSessionRepository movieRepository, 
-                                                      MovieSession movieSession)
+    public void BuyTickets_SunshineCase_ReturnsTicket(MovieSession movieSession)
     {
         // Arrange
-        var fixture = new Fixture()
-            .Customize(new AutoMoqCustomization());
-        var sut = new TicketOffice(fixture.Create<AuditoriumRepository>(), movieRepository);
 
         // Act
-
-        var action = sut.Invoking(x => x.BuyTickets(movieSession, 2)).Should().NotThrow();
+        var action = TicketOffice.BuyTickets(movieSession, 2);
 
         // Assert
-        action.Subject.Should().HaveCount(2);
-        action.Subject.Should().BeOfType<List<Ticket>>();
+        action.Should().HaveCount(2);
+        action.Should().BeOfType<List<Ticket>>();
     }
 
     [Theory, AutoData]
-    public void BuyTickets_FullyBooked_ThrowsException(MovieSessionRepository movieRepository,
-                                                       MovieSession movieSession)
+    public void BuyTickets_FullyBooked_ThrowsException(string movieName, int auditoriumNumber, DateTime startsAt)
     {
         // Arrange
-        var fixture = new Fixture()
-            .Customize(new AutoMoqCustomization());
-        var sut = new TicketOffice(fixture.Create<AuditoriumRepository>(), movieRepository);
+        var movieSession = new MovieSession(new List<Ticket>(), movieName, auditoriumNumber, startsAt);
 
         // Act
-        _ = sut.BuyTickets(movieSession, movieSession.Tickets.Count);
-        var action = sut.Invoking(x => x.BuyTickets(movieSession, 1)).Should().Throw<Exception>();
+        var action = () => TicketOffice.BuyTickets(movieSession, 1);
+
+        // Assert
+        action.Should().Throw<Exception>();
     }
 
     [Theory, AutoData]
-    public void BuyTickets_NotEnoughTickets_ThrowsException(MovieSessionRepository movieRepository,
-                                                            MovieSession movieSession)
+    public void BuyTickets_NotEnoughTickets_ThrowsException(string movieName, int auditoriumNumber, DateTime startsAt)
     {
         // Arrange
-        var fixture = new Fixture()
-            .Customize(new AutoMoqCustomization());
-        var sut = new TicketOffice(fixture.Create<AuditoriumRepository>(), movieRepository);
+        List<Ticket> tickets = new List<Ticket> { new Ticket() };
+        MovieSession movieSession = new MovieSession(tickets, movieName, auditoriumNumber, startsAt);
 
         // Act
-        _ = sut.BuyTickets(movieSession, movieSession.Tickets.Count - 1);
-        var action = sut.Invoking(x => x.BuyTickets(movieRepository.MovieSessions[2], 2)).Should().Throw<Exception>();
+        var action = () => TicketOffice.BuyTickets(movieSession, 2);
+
+        // Assert
+        action.Should().Throw<Exception>();
     }
 }
