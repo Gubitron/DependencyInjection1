@@ -1,4 +1,4 @@
-﻿namespace DependencyInjection1.Classes;
+﻿namespace DependencyInjection.Infrastructure;
 
 public class StandardDateTime : IDateTime
 {

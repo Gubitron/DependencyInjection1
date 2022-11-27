@@ -1,14 +1,14 @@
-﻿namespace DependencyInjection1.Services;
+﻿namespace DependencyInjection.Application;
 
 // TODO: Use clean architecture
 public class CinemaApplicationService
 {
-    private readonly MovieSessionRepository _movieRepository;
-    private readonly AuditoriumRepository _auditoriumRepository;
+    private readonly IMovieSessionRepository _movieRepository;
+    private readonly IAuditoriumRepository _auditoriumRepository;
     private readonly TicketOffice _ticketOffice;
 
-    public CinemaApplicationService(AuditoriumRepository auditoriumRepository,
-                                    MovieSessionRepository movieSessionRepository,
+    public CinemaApplicationService(IAuditoriumRepository auditoriumRepository,
+                                    IMovieSessionRepository movieSessionRepository,
                                     TicketOffice ticketOffice)
     {
         _movieRepository = movieSessionRepository;

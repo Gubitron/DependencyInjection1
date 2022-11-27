@@ -1,4 +1,4 @@
-﻿namespace DependencyInjection1.Classes;
+﻿namespace DependencyInjection.Domain;
 
 public class MovieSession
 {

@@ -1,6 +1,6 @@
-﻿namespace DependencyInjection1.Repositories;
+﻿namespace DependencyInjection.Infrastructure;
 
-public class AuditoriumRepository
+public class AuditoriumRepository : IAuditoriumRepository
 {
     public List<Auditorium> Auditoriums { get; }
 

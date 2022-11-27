@@ -1,11 +1,11 @@
-﻿namespace DependencyInjection1.Services;
+﻿namespace DependencyInjection.Application;
 
 public class TicketOffice
 {
-    private AuditoriumRepository _auditoriumRepository;
-    private MovieSessionRepository _movieSessionRepository;
+    private IAuditoriumRepository _auditoriumRepository;
+    private IMovieSessionRepository _movieSessionRepository;
 
-    public TicketOffice(AuditoriumRepository auditoriumRepository, MovieSessionRepository movieSessionRepository)
+    public TicketOffice(IAuditoriumRepository auditoriumRepository, IMovieSessionRepository movieSessionRepository)
     {
         _auditoriumRepository = auditoriumRepository;
         _movieSessionRepository = movieSessionRepository;

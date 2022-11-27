@@ -11,8 +11,8 @@ public class CinemaApplicationService_Tests
 
         _applicationService = new ServiceCollection()
                 .AddSingleton<CinemaApplicationService>()
-                .AddSingleton<AuditoriumRepository>()
-                .AddSingleton<MovieSessionRepository>()
+                .AddSingleton<IAuditoriumRepository, AuditoriumRepository>()
+                .AddSingleton<IMovieSessionRepository, MovieSessionRepository>()
                 .AddSingleton<TicketOffice>()
                 .AddSingleton<IDateTime>(_dateTime.Object)
                 .BuildServiceProvider();
@@ -23,7 +23,7 @@ public class CinemaApplicationService_Tests
     {
         // Arrange
         var sut = _applicationService.GetRequiredService<CinemaApplicationService>();
-        var movieSessions = _applicationService.GetRequiredService<MovieSessionRepository>();
+        var movieSessions = _applicationService.GetRequiredService<IMovieSessionRepository>();
         movieSessions.Add(session);
 
         // Act
@@ -39,7 +39,7 @@ public class CinemaApplicationService_Tests
     {
         // Arrange
         var sut = _applicationService.GetRequiredService<CinemaApplicationService>();
-        var movieSessions = _applicationService.GetRequiredService<MovieSessionRepository>();
+        var movieSessions = _applicationService.GetRequiredService<IMovieSessionRepository>();
         movieSessions.Add(session);
 
         // Act
@@ -84,8 +84,8 @@ public class CinemaApplicationService_Tests
     {
         // Arrange
         var sut = _applicationService.GetRequiredService<CinemaApplicationService>();
-        var auditoriums = _applicationService.GetRequiredService<AuditoriumRepository>();
-        var movieSessions = _applicationService.GetRequiredService<MovieSessionRepository>();
+        var auditoriums = _applicationService.GetRequiredService<IAuditoriumRepository>();
+        var movieSessions = _applicationService.GetRequiredService<IMovieSessionRepository>();
 
         List<Ticket> tickets = new List<Ticket> { ticket };
         MovieSession movieSession = new MovieSession(tickets, 
@@ -114,7 +114,7 @@ public class CinemaApplicationService_Tests
     {
         // Arrange
         var sut = _applicationService.GetRequiredService<CinemaApplicationService>();
-        var movieSessions = _applicationService.GetRequiredService<MovieSessionRepository>();
+        var movieSessions = _applicationService.GetRequiredService<IMovieSessionRepository>();
 
         // Assert
         var action = sut
@@ -128,7 +128,7 @@ public class CinemaApplicationService_Tests
     {
         // Arrange
         var sut = _applicationService.GetRequiredService<CinemaApplicationService>();
-        var movieSessions = _applicationService.GetRequiredService<MovieSessionRepository>();
+        var movieSessions = _applicationService.GetRequiredService<IMovieSessionRepository>();
 
         // Assert
         var action = sut

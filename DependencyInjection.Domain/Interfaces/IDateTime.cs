@@ -1,4 +1,4 @@
-﻿namespace DependencyInjection1.Interfaces;
+﻿namespace DependencyInjection.Domain.Interfaces;
 
 public interface IDateTime
 {

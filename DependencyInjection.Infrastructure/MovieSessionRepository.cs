@@ -1,6 +1,6 @@
-﻿namespace DependencyInjection1.Repositories;
+﻿namespace DependencyInjection.Infrastructure;
 
-public class MovieSessionRepository
+public class MovieSessionRepository : IMovieSessionRepository
 {
     public List<MovieSession> MovieSessions { get; }
 
