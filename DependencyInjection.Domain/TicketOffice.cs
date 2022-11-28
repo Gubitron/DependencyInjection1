@@ -1,4 +1,4 @@
-﻿namespace DependencyInjection.Application;
+﻿namespace DependencyInjection.Domain;
 
 public class TicketOffice
 {
